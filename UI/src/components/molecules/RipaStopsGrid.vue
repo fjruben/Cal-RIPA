@@ -236,7 +236,7 @@ export default {
     return {
       search: '',
       errorCodesLoading: false,
-      stops: [],
+      stops: {},
       headers: [
         { text: 'ID', value: 'id', sortName: 'id' },
         { text: 'Stop Date', value: 'stopDateTime', sortName: 'StopDateTime' },
@@ -247,28 +247,30 @@ export default {
         { text: 'Actions', value: 'actions', sortable: false, width: '100' },
       ],
       editedIndex: -1,
-      isPiiFound: this.savedFilters.isPiiFound
-        ? this.savedFilters.isPiiFound
+      isPiiFound: this.savedFilters?.isPiiFound
+        ? this.savedFilters?.isPiiFound
         : null,
-      isEdited: this.savedFilters.isEdited ? this.savedFilters.isEdited : null,
-      errorsFound: this.savedFilters.isEdited
-        ? this.savedFilters.isEdited
+      isEdited: this.savedFilters?.isEdited
+        ? this.savedFilters?.isEdited
+        : null,
+      errorsFound: this.savedFilters?.isEdited
+        ? this.savedFilters?.isEdited
         : null,
       officerName: null,
       selectedItems: [],
-      selectedErrorCodes: this.savedFilters.errorCodes
-        ? this.savedFilters.errorCodes
+      selectedErrorCodes: this.savedFilters?.errorCodes
+        ? this.savedFilters?.errorCodes
         : [],
       stopFromDate: null,
-      stopToDate: this.savedFilters.toDate ? this.savedFilters.toDate : null,
-      currentStatusFilter: this.savedFilters.status
-        ? this.savedFilters.status
+      stopToDate: this.savedFilters?.toDate ? this.savedFilters?.toDate : null,
+      currentStatusFilter: this.savedFilters?.status
+        ? this.savedFilters?.status
         : null,
       statuses: SUBMISSION_STATUSES,
       currentPage: 1,
       itemsPerPageOptions: [10, 25, 50, 100, 250, 500, 1000],
-      itemsPerPage: this.savedFilters.itemsPerPage
-        ? this.savedFilters.itemsPerPage
+      itemsPerPage: this.savedFilters?.itemsPerPage
+        ? this.savedFilters?.itemsPerPage
         : 10,
       currentOffset: this.currentPage * this.itemsPerPage,
       sortBy: 'StopDateTime',
@@ -278,6 +280,7 @@ export default {
 
   computed: {
     getStops() {
+      console.log(this.items)
       if (this.items.stops) {
         return this.items.stops
       } else {
@@ -292,7 +295,7 @@ export default {
       }
     },
     getErrorCodeSearchItems() {
-      return this.errorCodeSearch.items.map(itemObj => {
+      return this.errorCodeSearch?.items.map(itemObj => {
         return {
           text: `${itemObj.code}: ${itemObj.message.substr(0, 100)}...`,
           value: itemObj.code,
@@ -343,8 +346,8 @@ export default {
       this.stops = this.items
       // if the user has a from date saved in session storage
       // this overrides any date checking
-      if (this.savedFilters.fromDate) {
-        this.stopFromDate = this.savedFilters.fromDate
+      if (this.savedFilters?.fromDate) {
+        this.stopFromDate = this.savedFilters?.fromDate
       } else {
         const currentDateInUTC = zonedTimeToUtc(new Date())
         const currentYear = getYear(new Date())
@@ -360,8 +363,8 @@ export default {
         }
       }
       if (!_.isEmpty(this.savedFilters)) {
-        if (this.savedFilters.errorCodes) {
-          this.savedFilters.errorCodes.forEach(errorCodeVal => {
+        if (this.savedFilters?.errorCodes) {
+          this.savedFilters?.errorCodes.forEach(errorCodeVal => {
             this.callErrorCodeSearch(errorCodeVal)
           })
         }
