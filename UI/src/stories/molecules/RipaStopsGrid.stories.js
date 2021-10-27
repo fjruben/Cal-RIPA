@@ -1,5 +1,5 @@
 import RipaStopsGrid from '@/components/molecules/RipaStopsGrid'
-import { stops } from '../data/stops'
+import { stops, errorCodeSearch } from '../data/stops'
 
 export default {
   title: 'Molecules/RipaStopsGrid',
@@ -12,17 +12,23 @@ export const basic = () => ({
   data() {
     return {
       data: stops,
+      errorCodeSearch: errorCodeSearch,
+      savedFilters: {},
     }
   },
-  template: '<ripa-stops-grid :items="data"></ripa-stops-grid>',
+  template:
+    '<ripa-stops-grid :items="data" :errorCodeSearch="errorCodeSearch" :savedFilters="savedFilters"></ripa-stops-grid>',
 })
 
 export const loading = () => ({
   components: { RipaStopsGrid },
   data() {
     return {
-      data: [],
+      data: {},
+      errorCodeSearch: errorCodeSearch,
+      savedFilters: {},
     }
   },
-  template: '<ripa-stops-grid loading :items="data"></ripa-stops-grid>',
+  template:
+    '<ripa-stops-grid loading :items="data" :errorCodeSearch="errorCodeSearch" :savedFilters="savedFilters"></ripa-stops-grid>',
 })
