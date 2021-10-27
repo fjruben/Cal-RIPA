@@ -21,8 +21,8 @@ export const loading = () => ({
   components: { RipaStopsGrid },
   data() {
     return {
-      data: null,
+      data: [],
     }
   },
-  template: '<ripa-stops-grid :items="data"></ripa-stops-grid>',
+  template: '<ripa-stops-grid loading :items="data"></ripa-stops-grid>',
 })
