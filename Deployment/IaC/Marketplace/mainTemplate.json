@@ -303,6 +303,10 @@
       "type": "string",
       "defaultValue": "submission"
     },
+    "submission_fa_config_storage_container_prefix_cpra": {
+      "type": "string",
+      "defaultValue": "cpra"
+    },
     "doj_environment": {
       "type": "string",
       "defaultValue": "PROD"
@@ -2980,6 +2984,10 @@
             {
               "name": "ContainerPrefixSubmissions",
               "value": "[parameters('submission_fa_config_storage_container_prefix_submissions')]"
+            },
+            {
+              "name": "ContainerPrefixCpra",
+              "value": "[parameters('submission_fa_config_storage_container_prefix_cpra')]"
             },
             {
               "name": "ContainerPrefixResults",

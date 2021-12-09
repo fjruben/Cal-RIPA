@@ -7,7 +7,11 @@
     "utcNowValue": {
       "type": "string",
       "defaultValue": "[utcNow('yyyyMMDDHHmmssFFFF')]"
-    }
+    },
+    "submission_fa_config_storage_container_prefix_submissions": {
+      "type": "string",
+      "defaultValue": "submission"
+    },
   },
   "variables": {},
   "resources": [
@@ -70,6 +74,258 @@
         "timeout": "PT4H",
         "cleanupPreference": "OnExpiration",
         "retentionInterval": "PT4H"
+      }
+    },
+    // submission Function app
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2018-11-01",
+      "name": "[variables('sites_ripa_submission_fa_name')]",
+      "location": "[resourceGroup().location]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('serverfarms_submission_ASP_riparg_af76_name'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccounts_ripafnsa_name'))]",
+        "[resourceId('microsoft.insights/components', variables('components_ripa_ai_name'))]",
+        "[resourceId('Microsoft.DocumentDb/databaseAccounts', variables('databaseAccounts_ripa_cdb_name'))]"
+      ],
+      "kind": "functionapp,linux",
+      "tags": "[union(variables('default_tags'), if(contains(parameters('user_tags'), 'Microsoft.Web/sites'), parameters('user_tags')['Microsoft.Web/sites'], json('{}')))]",
+      "properties": {
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "name": "[concat(variables('sites_ripa_submission_fa_name'), parameters('fa_hostnamessl_ep_suff'))]",
+            "sslState": "Disabled",
+            "hostType": "Standard"
+          },
+          {
+            "name": "[concat(variables('sites_ripa_submission_fa_name'), parameters('fa_hostnamessl_scm_ep_suff'))]",
+            "sslState": "Disabled",
+            "hostType": "Repository"
+          }
+        ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('serverfarms_submission_ASP_riparg_af76_name'))]",
+        "reserved": true,
+        "isXenon": false,
+        "hyperV": false,
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~3"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "dotnet"
+            },
+            {
+              "name": "AzureWebJobs.ServiceBusSubmissionConsumer.Disabled",
+              "value": "true"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccounts_ripafnsa_name'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccounts_ripafnsa_name')), '2019-06-01').keys[0].value,';EndpointSuffix=', parameters('storage_ep_suff'))]"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(concat('microsoft.insights/components/', variables('components_ripa_ai_name'))).InstrumentationKey]"
+            },
+            {
+              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+              "value": "[reference(concat('microsoft.insights/components/', variables('components_ripa_ai_name'))).ConnectionString]"
+            },
+            {
+              "name": "Account",
+              "value": "[reference(resourceId('Microsoft.DocumentDb/databaseAccounts', variables('databaseAccounts_ripa_cdb_name'))).documentEndpoint]"
+            },
+            {
+              "name": "DatabaseName",
+              "value": "[parameters('dbaccount_sqlDb_name')]"
+            },
+            {
+              "name": "Key",
+              "value": "[variables('user_fa_keyvault_referencestring')]"
+            },
+            {
+              "name": "ContainerNameSubmissions",
+              "value": "[parameters('dbaccount_sqlDb_submission_container_name')]"
+            },
+            {
+              "name": "ContainerNameStops",
+              "value": "[parameters('dbaccount_sqlDb_stop_container_name')]"
+            },
+            {
+              "name": "ContainerPrefixSubmissions",
+              "value": "[parameters('submission_fa_config_storage_container_prefix_submissions')]"
+            },
+            {
+              "name": "ContainerPrefixCpra",
+              "value": "[parameters('submission_fa_config_storage_container_prefix_cpra')]"
+            },
+            {
+              "name": "ContainerPrefixResults",
+              "value": "[parameters('submission_fa_config_storage_container_prefix_results')]"
+            },
+            {
+              "name": "UserProfileContainerName",
+              "value": "[parameters('dbaccount_sqlDb_user_container_name')]"
+            },
+            {
+              "name": "RipaStorage",
+              "value": "[variables('keyvault_secret_ripa_storage')]"
+            },
+            {
+              "name": "SftpInputPath",
+              "value": "[variables('doj_inbound_folder')]"
+            },
+            {
+              "name": "SftpOutputPath",
+              "value": "[variables('doj_outbound_folder')]"
+            },
+            {
+              "name": "SftpPort",
+              "value": "[parameters('submission_fa_config_sftp_port')]"
+            },
+            {
+              "name": "SftpHost",
+              "value": "[variables('keyvault_secret_sftp_host')]"
+            },
+            {
+              "name": "SftpUserName",
+              "value": "[variables('keyvault_secret_sftp_username')]"
+            },
+            {
+              "name": "SftpPassword",
+              "value": "[variables('keyvault_secret_sftp_password')]"
+            },
+            {
+              "name": "SftpKey",
+              "value": "[variables('keyvault_secret_sftp_key')]"
+            },
+            {
+              "name": "SftpDisabled",
+              "value": "[parameters('doj_sftp_disabled')]"
+            },
+            {
+              "name": "ripa_app_id",
+              "value": "[parameters('auth_app_id')]"
+            },
+            {
+              "name": "ripa_tenant_id",
+              "value": "[parameters('auth_tenant_id')]"
+            },
+            {
+              "name": "ripa_tenant_name",
+              "value": "[parameters('auth_fqdn')]"
+            },
+            {
+              "name": "ServiceBusConnection",
+              "value": "[variables('keyvault_secret_servicebus_connection_string')]"
+            }
+          ],
+          "use32BitWorkerProcess": "[parameters('use32BitWorkerProcess')]",
+          "linuxFxVersion": "[parameters('linuxFxVersion')]",
+          "scmIpSecurityRestrictionsUseMain": true,
+          "numberOfWorkers": 1
+        },
+        "scmSiteAlsoStopped": false,
+        "clientAffinityEnabled": false,
+        "clientCertEnabled": false,
+        "hostNamesDisabled": false,
+        "containerSize": 1536,
+        "dailyMemoryTimeQuota": 0,
+        "httpsOnly": true,
+        "redundancyMode": "None"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "2018-11-01",
+      "name": "[concat(variables('sites_ripa_submission_fa_name'), '/web')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('sites_ripa_submission_fa_name'))]"
+      ],
+      "properties": {
+        "numberOfWorkers": 1,
+        "defaultDocuments": [],
+        "netFrameworkVersion": "v4.0",
+        "linuxFxVersion": "[parameters('linuxFxVersion')]",
+        "requestTracingEnabled": false,
+        "remoteDebuggingEnabled": false,
+        "httpLoggingEnabled": false,
+        "remoteDebuggingVersion": "VS2019",
+        "logsDirectorySizeLimit": 35,
+        "detailedErrorLoggingEnabled": false,
+        "publishingUsername": "$variables('sites_ripa_submission_fa_name')",
+        "azureStorageAccounts": {},
+        "scmType": "None",
+        "use32BitWorkerProcess": false,
+        "webSocketsEnabled": false,
+        "alwaysOn": false,
+        "managedPipelineMode": "Integrated",
+        "virtualApplications": [
+          {
+            "virtualPath": "/",
+            "physicalPath": "site\\wwwroot",
+            "preloadEnabled": false
+          }
+        ],
+        "loadBalancing": "LeastRequests",
+        "experiments": {
+          "rampUpRules": []
+        },
+        "autoHealEnabled": false,
+        "cors": {
+          "allowedOrigins": [ "*" ],
+          "supportCredentials": false
+        },
+        "localMySqlEnabled": false,
+        "ipSecurityRestrictions": [
+          {
+            "ipAddress": "[concat(first(reference(concat('Microsoft.ApiManagement/service/',  variables('service_ripa_apim_wus2_name')), '2019-12-01','Full').properties.publicIpAddresses),'/32')]",
+            "action": "Allow",
+            "priority": 100,
+            "name": "Apim-publicIp",
+            "description": "Allow Apim PublicIp"
+          },
+          {
+            "ipAddress": "0.0.0.0/0",
+            "action": "Deny",
+            "tag": "Default",
+            "priority": 1000,
+            "name": "NoInternet",
+            "description": "Stop all Internet traffic"
+          },
+          {
+            "ipAddress": "Any",
+            "action": "Deny",
+            "priority": 2147483647,
+            "name": "Deny all",
+            "description": "Deny all access"
+          }
+        ],
+        "scmIpSecurityRestrictionsUseMain": true,
+        "http20Enabled": false,
+        "minTlsVersion": "1.2",
+        "ftpsState": "AllAllowed",
+        "reservedInstanceCount": 0
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites/hostNameBindings",
+      "apiVersion": "2018-11-01",
+      "name": "[concat(variables('sites_ripa_submission_fa_name'), '/', variables('sites_ripa_submission_fa_name'), parameters('fa_hostnamessl_ep_suff'))]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('sites_ripa_submission_fa_name'))]"
+      ],
+      "properties": {
+        "siteName": "[variables('sites_ripa_submission_fa_name')]",
+        "hostNameType": "Verified"
       }
     }
   ],
