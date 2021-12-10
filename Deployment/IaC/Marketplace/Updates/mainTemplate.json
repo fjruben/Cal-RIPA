@@ -252,10 +252,10 @@
         "type": "SystemAssigned"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', variables('serverfarms_submission_ASP_riparg_af76_name'))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccounts_ripafnsa_name'))]",
-        "[resourceId('microsoft.insights/components', variables('components_ripa_ai_name'))]",
-        "[resourceId('Microsoft.DocumentDb/databaseAccounts', variables('databaseAccounts_ripa_cdb_name'))]"
+        // "[resourceId('Microsoft.Web/serverfarms', variables('serverfarms_submission_ASP_riparg_af76_name'))]",
+        // "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccounts_ripafnsa_name'))]",
+        // "[resourceId('microsoft.insights/components', variables('components_ripa_ai_name'))]",
+        // "[resourceId('Microsoft.DocumentDb/databaseAccounts', variables('databaseAccounts_ripa_cdb_name'))]"
       ],
       "kind": "functionapp,linux",
       "tags": "[union(variables('default_tags'), if(contains(parameters('user_tags'), 'Microsoft.Web/sites'), parameters('user_tags')['Microsoft.Web/sites'], json('{}')))]",
