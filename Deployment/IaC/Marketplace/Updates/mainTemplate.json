@@ -3,42 +3,107 @@
   "contentVersion": "1.0.0.0",
   "functions": [],
   "parameters": {
-    "utcNowValue": {
-      "type": "string",
-      "defaultValue": "[utcNow('yyyyMMDDHHmmssFFFF')]"
+    "agency_county": {
+      "type": "string"
     },
     "agency_abbreviation": {
+      "type": "string"
+    },
+    "agency_type": {
+      "type": "string"
+    },
+    "agency_ori": {
       "type": "string"
     },
     "application": {
       "defaultValue": "ripa",
       "type": "string"
     },
-    "submission_fa_name": {
-      "defaultValue": "submission-fa",
+    "environment_type": {
+      "type": "string",
+      "defaultValue": "PROD"
+    },
+    "apim_sku": {
+      "type": "string",
+      "defaultValue": "Developer"
+    },
+    "enable_beats": {
+      "type": "bool",
+      "defaultValue": false
+    },
+    "enable_stop_debugger": {
+      "type": "bool",
+      "defaultValue": false
+    },
+    "auth_tenant_id": {
       "type": "string"
     },
-    "serverfarms_submission_ASP_name": {
-      "defaultValue": "submission-fa-asp",
+    "auth_authority": {
       "type": "string"
     },
-    "storageAccounts_functionssa_name": {
-      "defaultValue": "fnsa",
+    "auth_logout_url": {
+      "defaultValue": "",
       "type": "string"
     },
-    "components_ai_name": {
-      "defaultValue": "ai",
+    "doj_sftp_server": {
+      "defaultValue": "",
       "type": "string"
     },
-    "databaseAccounts_cdb_name": {
-      "defaultValue": "cdb",
+    "doj_sftp_server_key": {
+      "defaultValue": "",
+      "type": "string"
+    },
+    "doj_sftp_username": {
+      "defaultValue": "",
+      "type": "string"
+    },
+    "doj_sftp_password": {
+      "defaultValue": "",
+      "type": "string"
+    },
+    "doj_sftp_disabled": {
+      "type": "string",
+      "defaultValue": "false"
+    },
+    "auth_app_id": {
+      "type": "string"
+    },
+    "auth_fqdn": {
       "type": "string"
     },
     "user_tags": {
       "type": "object",
       "defaultValue": {}
     },
-    "agency_ori": {
+    "app_domain_type": {
+      "type": "string"
+    },
+    "primary_domain": {
+      "defaultValue": "cssa.cloud",
+      "type": "string"
+    },
+    "app_cname_alias": {
+      "defaultValue": "ripa",
+      "type": "string"
+    },
+    "certificate_key_vault_rid": {
+      "defaultValue": "/subscriptions/c74e04b6-0cd7-4778-863e-34654eb49270/resourceGroups/sdsd-gen-p-rg/providers/Microsoft.KeyVault/vaults/sdsd-gen-p-kv",
+      "type": "string"
+    },
+    "certificate_secret_name": {
+      "defaultValue": "star-cssa-cloud",
+      "type": "string"
+    },
+    "glocation": {
+      "defaultValue": "Global",
+      "type": "string"
+    },
+    "sites_user_fa_name": {
+      "defaultValue": "userprofile-fa",
+      "type": "string"
+    },
+    "storage_ep_suff": {
+      "defaultValue": "core.usgovcloudapi.net",
       "type": "string"
     },
     "fa_hostnamessl_ep_suff": {
@@ -49,73 +114,165 @@
       "defaultValue": ".scm.azurewebsites.us",
       "type": "string"
     },
-    "storage_ep_suff": {
-      "defaultValue": "core.usgovcloudapi.net",
+    "domain_fa_name": {
+      "defaultValue": "domain-fa",
       "type": "string"
     },
-    "dbaccount_sqlDb_name": {
-      "type": "string",
-      "defaultValue": "ripastops"
-    },
-    "vaults_kv_secrets_key1": {
-      "type": "string",
-      "defaultValue": "dbkey1"
-    },
-    "vaults_kv_name": {
-      "defaultValue": "kv",
+    "stop_fa_name": {
+      "defaultValue": "stop-fa",
       "type": "string"
     },
-    "dbaccount_sqlDb_submission_container_name": {
-      "type": "string",
-      "defaultValue": "submission"
-    },
-    "dbaccount_sqlDb_stop_container_name": {
-      "type": "string",
-      "defaultValue": "stop"
-    },
-    "submission_fa_config_storage_container_prefix_submissions": {
-      "type": "string",
-      "defaultValue": "submission"
-    },
-    "submission_fa_config_storage_container_prefix_results": {
-      "type": "string",
-      "defaultValue": "result"
-    },
-    "submission_fa_config_storage_container_prefix_cpra": {
-      "type": "string",
-      "defaultValue": "cpra"
-    },
-    "dbaccount_sqlDb_user_container_name": {
-      "type": "string",
-      "defaultValue": "userprofile"
-    },
-    "service_apim_name": {
-      "defaultValue": "apim",
+    "submission_fa_name": {
+      "defaultValue": "submission-fa",
       "type": "string"
+    },
+    "textanalytics_fa_name": {
+      "defaultValue": "textanalytics-fa",
+      "type": "string"
+    },
+    "use32BitWorkerProcess": {
+      "defaultValue": false,
+      "type": "bool"
     },
     "linuxFxVersion": {
       "defaultValue": "dotnet|3.1",
       "type": "string"
     },
+    "vaults_kv_name": {
+      "defaultValue": "kv",
+      "type": "string"
+    },
+    "components_ai_name": {
+      "defaultValue": "ai",
+      "type": "string"
+    },
+    "serverfarms_userprofile_ASP_name": {
+      "defaultValue": "userprofile-fa-asp",
+      "type": "string"
+    },
+    "serverfarms_domain_ASP_name": {
+      "defaultValue": "domain-fa-asp",
+      "type": "string"
+    },
+    "serverfarms_stop_ASP_name": {
+      "defaultValue": "stop-fa-asp",
+      "type": "string"
+    },
+    "serverfarms_submission_ASP_name": {
+      "defaultValue": "submission-fa-asp",
+      "type": "string"
+    },
+    "serverfarms_textanalytics_ASP_name": {
+      "defaultValue": "textanalytics-fa-asp",
+      "type": "string"
+    },
+    "virtualNetworks_vnet_name": {
+      "defaultValue": "vnet",
+      "type": "string"
+    },
+    "service_apim_name": {
+      "defaultValue": "apim",
+      "type": "string"
+    },
+    "databaseAccounts_cdb_name": {
+      "defaultValue": "cdb",
+      "type": "string"
+    },
+    "storageAccounts_uisa_name": {
+      "defaultValue": "uisa",
+      "type": "string"
+    },
+    "storageAccounts_ctsa_name": {
+      "defaultValue": "ctsa",
+      "type": "string"
+    },
+    "storageAccounts_functionssa_name": {
+      "defaultValue": "fnsa",
+      "type": "string"
+    },
+    "workspaces_laws_name": {
+      "defaultValue": "laws",
+      "type": "string"
+    },
+    "storageAccounts_nsgflowlogssa_name": {
+      "defaultValue": "flsa",
+      "type": "string"
+    },
+    "networkSecurityGroups_apim_nsg_name": {
+      "defaultValue": "apim-nsg",
+      "type": "string"
+    },
+    "networkSecurityGroups_vnet_cdb_subnet_nsg_name": {
+      "defaultValue": "cdb-nsg",
+      "type": "string"
+    },
+    "actionGroups_Application_Insights_Smart_Detection_name": {
+      "defaultValue": "Application Insights Smart Detection",
+      "type": "string"
+    },
+    "apim_publisherEmail": {
+      "defaultValue": "support@cssa.cloud",
+      "type": "string"
+    },
+    "apim_publisherName": {
+      "defaultValue": "[concat(parameters('agency_abbreviation'), 'cssa-ripa')]",
+      "type": "string"
+    },
+    "accounts_ripaTA_name": {
+      "defaultValue": "ta",
+      "type": "string"
+    },
+    "kv_tenantId": {
+      "type": "string",
+      "defaultValue": "[subscription().tenantId]",
+      "metadata": {
+        "description": "Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. Get it by using Get-AzSubscription cmdlet."
+      }
+    },
+    "kv_secretsPermissions": {
+      "type": "array",
+      "defaultValue": ["Get", "List"],
+      "metadata": {
+        "description": "Specifies the permissions to secrets in the vault. Valid values are: all, get, list, set, delete, backup, restore, recover, and purge."
+      }
+    },
+    "kv_keysPermissions": {
+      "type": "array",
+      "defaultValue": ["Get", "List"],
+      "metadata": {
+        "description": "Specifies the permissions to keys in the vault. Valid values are: all, get, list, set, delete, backup, restore, recover, and purge."
+      }
+    },
+    "kv_CertPermissions": {
+      "type": "array",
+      "defaultValue": ["Get", "List"],
+      "metadata": {
+        "description": "Specifies the permissions to keys in the vault. Valid values are: all, get, list, set, delete, backup, restore, recover, and purge."
+      }
+    },
+    "vaults_kv_secrets_key0": {
+      "type": "string",
+      "defaultValue": "ServiceBusConnection"
+    },
+    "vaults_kv_secrets_key1": {
+      "type": "string",
+      "defaultValue": "dbkey1"
+    },
+    "vaults_kv_secrets_key2": {
+      "type": "string",
+      "defaultValue": "dbkey2"
+    },
     "vaults_kv_secrets_key3": {
       "type": "string",
       "defaultValue": "ripaStorage"
     },
-    "doj_environment": {
+    "vaults_kv_secrets_key4": {
       "type": "string",
-      "defaultValue": "PROD"
+      "defaultValue": "takey1"
     },
-    "submission_fa_config_sftp_input_path": {
+    "vaults_kv_secrets_key5": {
       "type": "string",
-      "defaultValue": "/incoming_to_DOJ/JSON/"
-    },
-    "submission_fa_config_sftp_output_path": {
-      "type": "string",
-      "defaultValue": "/responses_from_DOJ/"
-    },
-    "submission_fa_config_sftp_port": {
-      "type": "int",
-      "defaultValue": 22
+      "defaultValue": "takey2"
     },
     "vaults_kv_secrets_key6": {
       "type": "string",
@@ -133,60 +290,239 @@
       "type": "string",
       "defaultValue": "SftpUsername"
     },
-    "doj_sftp_disabled": {
+    "vaults_kv_secrets_key10": {
       "type": "string",
-      "defaultValue": "false"
+      "defaultValue": "CosmosConnectionString"
     },
-    "auth_app_id": {
+    "submission_fa_config_storage_container_prefix_results": {
+      "type": "string",
+      "defaultValue": "result"
+    },
+    "submission_fa_config_storage_container_prefix_submissions": {
+      "type": "string",
+      "defaultValue": "submission"
+    },
+    "submission_fa_config_storage_container_prefix_cpra": {
+      "type": "string",
+      "defaultValue": "cpra"
+    },
+    "doj_environment": {
+      "type": "string",
+      "defaultValue": "PROD"
+    },
+    "submission_fa_config_sftp_input_path": {
+      "type": "string",
+      "defaultValue": "/incoming_to_DOJ/JSON/"
+    },
+    "submission_fa_config_sftp_output_path": {
+      "type": "string",
+      "defaultValue": "/responses_from_DOJ/"
+    },
+    "submission_fa_config_sftp_port": {
+      "type": "int",
+      "defaultValue": 22
+    },
+    "apim_endpoint": {
+      "type": "SecureString",
+      "defaultValue": ".azure-api.us"
+    },
+    "apim_apis_userprofile_path": {
+      "type": "SecureString",
+      "defaultValue": "userprofile"
+    },
+    "apim_apis_userprofile_name": {
+      "type": "string",
+      "defaultValue": "userprofile"
+    },
+    "apim_apis_userprofile_serviceurl": {
+      "type": "SecureString",
+      "defaultValue": "http://userprofile.usgovcloudapp.net/api"
+    },
+    "apim_apis_stop_path": {
+      "type": "SecureString",
+      "defaultValue": "Stop"
+    },
+    "apim_apis_stop_name": {
+      "type": "string",
+      "defaultValue": "stop"
+    },
+    "apim_apis_stop_serviceurl": {
+      "type": "string",
+      "defaultValue": "http://stop.usgovcloudapp.net/api"
+    },
+    "apim_apis_textAnalytics_path": {
+      "type": "SecureString",
+      "defaultValue": "TextAnalytics"
+    },
+    "apim_apis_textAnalytics_name": {
+      "type": "string",
+      "defaultValue": "TextAnalytics"
+    },
+    "apim_apis_textAnalytics_serviceurl": {
+      "type": "string",
+      "defaultValue": "http://textanalytics.usgovcloudapp.net/api"
+    },
+    "apim_apis_domain_path": {
+      "type": "SecureString",
+      "defaultValue": "Domain"
+    },
+    "apim_apis_domain_name": {
+      "type": "string",
+      "defaultValue": "domain"
+    },
+    "apim_apis_domain_serviceurl": {
+      "type": "string",
+      "defaultValue": "http://domain.usgovcloudapp.net/api"
+    },
+    "apim_apis_submission_path": {
+      "type": "SecureString",
+      "defaultValue": "Submission"
+    },
+    "apim_apis_submission_name": {
+      "type": "string",
+      "defaultValue": "submission"
+    },
+    "apim_apis_submission_serviceurl": {
+      "type": "string",
+      "defaultValue": "http://submission.usgovcloudapp.net/api"
+    },
+    "dbaccount_sqlDb_name": {
+      "type": "string",
+      "defaultValue": "ripastops"
+    },
+    "dbaccount_sqlDb_user_container_name": {
+      "type": "string",
+      "defaultValue": "userprofile"
+    },
+    "dbaccount_sqlDb_stop_container_name": {
+      "type": "string",
+      "defaultValue": "stop"
+    },
+    "dbaccount_sqlDb_stop_audit_container_name": {
+      "type": "string",
+      "defaultValue": "stopaudit"
+    },
+    "dbaccount_sqlDb_submission_container_name": {
+      "type": "string",
+      "defaultValue": "submission"
+    },
+    "privateDnsZones_privatelink_azure_com_name": {
+      "defaultValue": "pvtlink.documents.azure.com",
       "type": "string"
     },
-    "auth_fqdn": {
+    "privateDnsZones_vnetlink_name": {
+      "defaultValue": "vnetlink",
       "type": "string"
     },
-    "auth_tenant_id": {
-      "type": "string"
+    "policyCont_a": {
+      "type": "string",
+      "defaultValue": "<policies><inbound><cors allow-credentials=\"true\"><allowed-origins><origin>"
     },
-    "use32BitWorkerProcess": {
-      "defaultValue": false,
-      "type": "bool"
+    "policyCont_b": {
+      "type": "string",
+      "defaultValue": "</origin><origin>"
     },
-    "vaults_kv_secrets_key0": {
-      "defaultValue": "ServiceBusConnection",
-      "type": "string"
+    "policyCont_c": {
+      "type": "string",
+      "defaultValue": "</origin></allowed-origins><allowed-methods><method>GET</method><method>PUT</method><method>POST</method><method>DELETE</method></allowed-methods><allowed-headers><header>Cache-Control</header><header>Ocp-Apim-Trace</header><header>Authorization</header><header>Content-Type</header></allowed-headers></cors><validate-jwt header-name=\"Authorization\" failed-validation-httpcode=\"401\" failed-validation-error-message=\"Unauthorized. Access token is missing or invalid.\" require-expiration-time=\"true\" require-scheme=\"Bearer\" require-signed-tokens=\"true\" clock-skew=\"240\" output-token-variable-name=\"openid_token\"><openid-config url=\""
+    },
+    "policyCont_d": {
+      "type": "string",
+      "defaultValue": "/.well-known/openid-configuration\" /><audiences><audience>"
+    },
+    "policyCont_e": {
+      "type": "string",
+      "defaultValue": "</audience></audiences><required-claims><claim name=\"roles\" match=\"any\"><value>RIPA-ADMINS-ROLE</value><value>RIPA-USERS-ROLE</value></claim></required-claims></validate-jwt></inbound><backend><forward-request/></backend><outbound/><on-error/></policies>"
+    },
+    "apim_subnet_name": {
+      "type": "string",
+      "defaultValue": "-apim-subnet"
     },
     "cdb_subnet_name": {
       "type": "string",
       "defaultValue": "-cdb-subnet"
     },
-    "workspaces_laws_name": {
-      "defaultValue": "laws",
+    "prv_dns_soa_name": {
+      "defaultValue": "@",
       "type": "string"
     },
-    "virtualNetworks_vnet_name": {
-      "defaultValue": "vnet",
+    "privateEndpoints_cdb_pe_name": {
+      "defaultValue": "cdb-pe",
       "type": "string"
+    },
+    "Vnet_addressprefixes": {
+      "type": "array",
+      "defaultValue": ["172.16.0.0/16"]
+    },
+    "apim_subnet_addressprefix": {
+      "defaultValue": "172.16.0.0/24",
+      "type": "string"
+    },
+    "cdb_subnet_addressprefix": {
+      "defaultValue": "172.16.1.0/24",
+      "type": "string"
+    },
+    "cdb_private_ipaddress1": {
+      "defaultValue": "172.16.1.4",
+      "type": "string"
+    },
+    "cdb_private_ipaddress2": {
+      "defaultValue": "172.16.1.5",
+      "type": "string"
+    },
+    "namespaces_sdsd_ripa_d_sbn_name": {
+      "defaultValue": "-sbn",
+      "type": "String"
+    },
+    "utcNowValue": {
+      "type": "string",
+      "defaultValue": "[utcNow('yyyyMMDDHHmmssFFFF')]"
     }
   },
   "variables": {
-    "sites_ripa_submission_fa_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('submission_fa_name'))]",
-    "serverfarms_submission_ASP_riparg_af76_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('serverfarms_submission_ASP_name'))]",
-    "storageAccounts_ripafnsa_name": "[concat(parameters('agency_abbreviation'), replace(parameters('application'), '-', ''), parameters('storageAccounts_functionssa_name'))]",
+    "servicebus_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'), parameters('namespaces_sdsd_ripa_d_sbn_name'))]",
     "components_ripa_ai_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('components_ai_name'))]",
     "databaseAccounts_ripa_cdb_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('databaseAccounts_cdb_name'))]",
-    "vaults_ripa_kv_name": "[concat(parameters('agency_abbreviation'), parameters('application'), toLower(take(uniqueString(parameters('utcNowValue')), 3)), parameters('vaults_kv_name'))]",
-    "user_fa_keyvault_referencestring": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key1'),')')]",
+    "networkSecurityGroups_ripa_apim_nsg_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('networkSecurityGroups_apim_nsg_name'))]",
+    "networkSecurityGroups_ripa_vnet_cdb_subnet_nsg_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('networkSecurityGroups_vnet_cdb_subnet_nsg_name'))]",
+    "serverfarms_userprofile_ASP_riparg_af76_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('serverfarms_userprofile_ASP_name'))]",
+    "serverfarms_domain_ASP_riparg_af76_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('serverfarms_domain_ASP_name'))]",
+    "serverfarms_stop_ASP_riparg_af76_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('serverfarms_stop_ASP_name'))]",
+    "serverfarms_submission_ASP_riparg_af76_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('serverfarms_submission_ASP_name'))]",
+    "serverfarms_textanalytics_ASP_riparg_af76_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('serverfarms_textanalytics_ASP_name'))]",
     "service_ripa_apim_wus2_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('service_apim_name'))]",
-    "template_version": "#{TEMPLATE_VERSION}#",
+    "sites_ripa_domain_fa_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('domain_fa_name'))]",
+    "sites_ripa_stop_fa_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('stop_fa_name'))]",
+    "sites_ripa_submission_fa_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('submission_fa_name'))]",
+    "sites_ripa_textanalytics_fa_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('textanalytics_fa_name'))]",
+    "sites_ripa_user_fa_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('sites_user_fa_name'))]",
+    "storageAccounts_ripactsa_name": "[concat(parameters('agency_abbreviation'), replace(parameters('application'), '-', ''), parameters('storageAccounts_ctsa_name'))]",
+    "storageAccounts_ripafnsa_name": "[concat(parameters('agency_abbreviation'), replace(parameters('application'), '-', ''), parameters('storageAccounts_functionssa_name'))]",
+    "storageAccounts_ripansgflsa_name": "[concat(parameters('agency_abbreviation'), replace(parameters('application'), '-', ''), parameters('storageAccounts_nsgflowlogssa_name'))]",
+    "storageAccounts_ripauisa_name": "[concat(parameters('agency_abbreviation'), replace(parameters('application'), '-', ''), parameters('storageAccounts_uisa_name'))]",
+    "vaults_ripa_kv_name": "[concat(parameters('agency_abbreviation'), parameters('application'), toLower(take(uniqueString(parameters('utcNowValue')), 3)), parameters('vaults_kv_name'))]",
+    "virtualNetworks_ripa_vnet_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('virtualNetworks_vnet_name'))]",
+    "workspaces_ripa_laws_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('workspaces_laws_name'))]",
+    "TA_Name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('accounts_ripaTA_name'))]",
+    "privateDnsZones_privatelink_documents_azure_com_name": "[concat(parameters('agency_abbreviation'), replace(parameters('application'), '-',''), parameters('privateDnsZones_privatelink_azure_com_name'))]",
+    "privatednszones_a_name": "[concat(variables('databaseAccounts_ripa_cdb_name'),'-', resourceGroup().location)]",
+    "privateEndpoints_ripa_cdb_pe_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('privateEndpoints_cdb_pe_name'))]",
+    "user_fa_keyvault_referencestring": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key1'),')')]",
     "keyvault_secret_ripa_storage": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key3'),')')]",
-    "doj_inbound_folder": "[concat('/', parameters('doj_environment'), parameters('submission_fa_config_sftp_input_path'))]",
-    "doj_outbound_folder": "[concat('/', parameters('doj_environment'), parameters('submission_fa_config_sftp_output_path'))]",
+    "textanalytics_fa_keyvault_referencestring": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key4'),')')]",
+    "cssa_domain_url": "[concat('https://', parameters('application'), '-', parameters('agency_abbreviation'),'.cssa.cloud')]",
+    "custom_domain_url": "[concat('https://', parameters('app_cname_alias'), '.', parameters('auth_fqdn'))]",
+    "public_ui_url": "[if(equals(parameters('app_domain_type'), 'private_domain'), variables('custom_domain_url'), variables('cssa_domain_url'))]",
     "keyvault_secret_sftp_key": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key6'),')')]",
     "keyvault_secret_sftp_host": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key7'),')')]",
     "keyvault_secret_sftp_password": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key8'),')')]",
     "keyvault_secret_sftp_username": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key9'),')')]",
+    "keyvault_secret_cosmos_connection_string": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key10'),')')]",
     "keyvault_secret_servicebus_connection_string": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key0'),')')]",
-    "workspaces_ripa_laws_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('workspaces_laws_name'))]",
-    "virtualNetworks_ripa_vnet_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('virtualNetworks_vnet_name'))]",
+    "doj_inbound_folder": "[concat('/', parameters('doj_environment'), parameters('submission_fa_config_sftp_input_path'))]",
+    "doj_outbound_folder": "[concat('/', parameters('doj_environment'), parameters('submission_fa_config_sftp_output_path'))]",
+    // "template_version": "v2021.06.17.1",
+    "template_version": "#{TEMPLATE_VERSION}#",
     "default_tags": {
       "application": "ripa",
       "agency": "[parameters('agency_abbreviation')]",
@@ -662,6 +998,50 @@
         },
         "publicNetworkAccessForIngestion": "Enabled",
         "publicNetworkAccessForQuery": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2020-08-01",
+      "name": "[variables('virtualNetworks_ripa_vnet_name')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_ripa_apim_nsg_name'))]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_ripa_vnet_cdb_subnet_nsg_name'))]"
+      ],
+      "tags": "[union(variables('default_tags'), if(contains(parameters('user_tags'), 'Microsoft.Network/virtualNetworks'), parameters('user_tags')['Microsoft.Network/virtualNetworks'], json('{}')))]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": "[parameters('Vnet_addressprefixes')]"
+        },
+        "subnets": [
+          {
+            "name": "[concat(variables('virtualNetworks_ripa_vnet_name'), parameters('apim_subnet_name'))]",
+            "properties": {
+              "addressPrefix": "[parameters('apim_subnet_addressprefix')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_ripa_apim_nsg_name'))]"
+              },
+              "delegations": [],
+              "privateEndpointNetworkPolicies": "Enabled",
+              "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+          },
+          {
+            "name": "[concat(variables('virtualNetworks_ripa_vnet_name'), parameters('cdb_subnet_name'))]",
+            "properties": {
+              "addressPrefix": "[parameters('cdb_subnet_addressprefix')]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_ripa_vnet_cdb_subnet_nsg_name'))]"
+              },
+              "delegations": [],
+              "privateEndpointNetworkPolicies": "Disabled",
+              "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+          }
+        ],
+        "virtualNetworkPeerings": [],
+        "enableDdosProtection": false
       }
     }
   ],
