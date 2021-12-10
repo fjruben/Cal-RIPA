@@ -73,7 +73,7 @@
       "type": "string"
     },
     "user_tags": {
-      "type": "Object",
+      "type": "object",
       "defaultValue": {}
     },
     "app_domain_type": {
@@ -3767,7 +3767,7 @@
       "value": "[variables('sites_ripa_user_fa_name')]"
     },
     "tags": {
-      "type": "Object",
+      "type": "object",
       "value": "[variables('default_tags')]"
     }
   }

@@ -8,13 +8,178 @@
       "type": "string",
       "defaultValue": "[utcNow('yyyyMMDDHHmmssFFFF')]"
     },
+    "agency_abbreviation": {
+      "type": "string"
+    },
+    "application": {
+      "defaultValue": "ripa",
+      "type": "string"
+    },
+    "submission_fa_name": {
+      "defaultValue": "submission-fa",
+      "type": "string"
+    },
+    "serverfarms_submission_ASP_name": {
+      "defaultValue": "submission-fa-asp",
+      "type": "string"
+    },
+    "storageAccounts_functionssa_name": {
+      "defaultValue": "fnsa",
+      "type": "string"
+    },
+    "components_ai_name": {
+      "defaultValue": "ai",
+      "type": "string"
+    },
+    "databaseAccounts_cdb_name": {
+      "defaultValue": "cdb",
+      "type": "string"
+    },
+    "user_tags": {
+      "type": "object",
+      "defaultValue": {}
+    },
+    "agency_ori": {
+      "type": "string"
+    },
+    "fa_hostnamessl_ep_suff": {
+      "defaultValue": ".azurewebsites.us",
+      "type": "string"
+    },
+    "fa_hostnamessl_scm_ep_suff": {
+      "defaultValue": ".scm.azurewebsites.us",
+      "type": "string"
+    },
+    "storage_ep_suff": {
+      "defaultValue": "core.usgovcloudapi.net",
+      "type": "string"
+    },
+    "dbaccount_sqlDb_name": {
+      "type": "string",
+      "defaultValue": "ripastops"
+    },
+    "vaults_kv_secrets_key1": {
+      "type": "string",
+      "defaultValue": "dbkey1"
+    },
+    "vaults_kv_name": {
+      "defaultValue": "kv",
+      "type": "string"
+    },
+    "dbaccount_sqlDb_submission_container_name": {
+      "type": "string",
+      "defaultValue": "submission"
+    },
+    "dbaccount_sqlDb_stop_container_name": {
+      "type": "string",
+      "defaultValue": "stop"
+    },
     "submission_fa_config_storage_container_prefix_submissions": {
       "type": "string",
       "defaultValue": "submission"
     },
+    "submission_fa_config_storage_container_prefix_results": {
+      "type": "string",
+      "defaultValue": "result"
+    },
+    "submission_fa_config_storage_container_prefix_cpra": {
+      "type": "string",
+      "defaultValue": "cpra"
+    },
+    "dbaccount_sqlDb_user_container_name": {
+      "type": "string",
+      "defaultValue": "userprofile"
+    },
+    "service_apim_name": {
+      "defaultValue": "apim",
+      "type": "string"
+    },
+    "linuxFxVersion": {
+      "defaultValue": "dotnet|3.1",
+      "type": "string"
+    },
+    "vaults_kv_secrets_key3": {
+      "type": "string",
+      "defaultValue": "ripaStorage"
+    },
+    "doj_environment": {
+      "type": "string",
+      "defaultValue": "PROD"
+    },
+    "submission_fa_config_sftp_input_path": {
+      "type": "string",
+      "defaultValue": "/incoming_to_DOJ/JSON/"
+    },
+    "submission_fa_config_sftp_output_path": {
+      "type": "string",
+      "defaultValue": "/responses_from_DOJ/"
+    },
+    "submission_fa_config_sftp_port": {
+      "type": "int",
+      "defaultValue": 22
+    },
+    "vaults_kv_secrets_key6": {
+      "type": "string",
+      "defaultValue": "SftpKey"
+    },
+    "vaults_kv_secrets_key7": {
+      "type": "string",
+      "defaultValue": "SftpHost"
+    },
+    "vaults_kv_secrets_key8": {
+      "type": "string",
+      "defaultValue": "SftpPassword"
+    },
+    "vaults_kv_secrets_key9": {
+      "type": "string",
+      "defaultValue": "SftpUsername"
+    },
+    "doj_sftp_disabled": {
+      "type": "string",
+      "defaultValue": "false"
+    },
+    "auth_app_id": {
+      "type": "string"
+    },
+    "auth_fqdn": {
+      "type": "string"
+    },
+    "auth_tenant_id": {
+      "type": "string"
+    },
+    "use32BitWorkerProcess": {
+      "defaultValue": false,
+      "type": "bool"
+    },
+    "vaults_kv_secrets_key0": {
+      "defaultValue": "ServiceBusConnection",
+      "type": "string"
+    }
   },
   "variables": {
     "sites_ripa_submission_fa_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('submission_fa_name'))]",
+    "serverfarms_submission_ASP_riparg_af76_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('serverfarms_submission_ASP_name'))]",
+    "storageAccounts_ripafnsa_name": "[concat(parameters('agency_abbreviation'), replace(parameters('application'), '-', ''), parameters('storageAccounts_functionssa_name'))]",
+    "components_ripa_ai_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('components_ai_name'))]",
+    "databaseAccounts_ripa_cdb_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('databaseAccounts_cdb_name'))]",
+    "vaults_ripa_kv_name": "[concat(parameters('agency_abbreviation'), parameters('application'), toLower(take(uniqueString(parameters('utcNowValue')), 3)), parameters('vaults_kv_name'))]",
+    "user_fa_keyvault_referencestring": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key1'),')')]",
+    "service_ripa_apim_wus2_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('service_apim_name'))]",
+    "template_version": "#{TEMPLATE_VERSION}#",
+    "keyvault_secret_ripa_storage": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key3'),')')]",
+    "doj_inbound_folder": "[concat('/', parameters('doj_environment'), parameters('submission_fa_config_sftp_input_path'))]",
+    "doj_outbound_folder": "[concat('/', parameters('doj_environment'), parameters('submission_fa_config_sftp_output_path'))]",
+    "keyvault_secret_sftp_key": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key6'),')')]",
+    "keyvault_secret_sftp_host": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key7'),')')]",
+    "keyvault_secret_sftp_password": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key8'),')')]",
+    "keyvault_secret_sftp_username": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key9'),')')]",
+    "keyvault_secret_servicebus_connection_string": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key0'),')')]",
+    "default_tags": {
+      "application": "ripa",
+      "agency": "[parameters('agency_abbreviation')]",
+      "agency_ori": "[parameters('agency_ori')]",
+      "template_version": "[variables('template_version')]"
+    }
   },
   "resources": [
     {
@@ -78,7 +243,6 @@
         "retentionInterval": "PT4H"
       }
     },
-    // submission Function app
     {
       "type": "Microsoft.Web/sites",
       "apiVersion": "2018-11-01",
@@ -116,8 +280,116 @@
         "siteConfig": {
           "appSettings": [
             {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~3"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "dotnet"
+            },
+            {
+              "name": "AzureWebJobs.ServiceBusSubmissionConsumer.Disabled",
+              "value": "true"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccounts_ripafnsa_name'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccounts_ripafnsa_name')), '2019-06-01').keys[0].value,';EndpointSuffix=', parameters('storage_ep_suff'))]"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(concat('microsoft.insights/components/', variables('components_ripa_ai_name'))).InstrumentationKey]"
+            },
+            {
+              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+              "value": "[reference(concat('microsoft.insights/components/', variables('components_ripa_ai_name'))).ConnectionString]"
+            },
+            {
+              "name": "Account",
+              "value": "[reference(resourceId('Microsoft.DocumentDb/databaseAccounts', variables('databaseAccounts_ripa_cdb_name'))).documentEndpoint]"
+            },
+            {
+              "name": "DatabaseName",
+              "value": "[parameters('dbaccount_sqlDb_name')]"
+            },
+            {
+              "name": "Key",
+              "value": "[variables('user_fa_keyvault_referencestring')]"
+            },
+            {
+              "name": "ContainerNameSubmissions",
+              "value": "[parameters('dbaccount_sqlDb_submission_container_name')]"
+            },
+            {
+              "name": "ContainerNameStops",
+              "value": "[parameters('dbaccount_sqlDb_stop_container_name')]"
+            },
+            {
+              "name": "ContainerPrefixSubmissions",
+              "value": "[parameters('submission_fa_config_storage_container_prefix_submissions')]"
+            },
+            {
               "name": "ContainerPrefixCpra",
               "value": "[parameters('submission_fa_config_storage_container_prefix_cpra')]"
+            },
+            {
+              "name": "ContainerPrefixResults",
+              "value": "[parameters('submission_fa_config_storage_container_prefix_results')]"
+            },
+            {
+              "name": "UserProfileContainerName",
+              "value": "[parameters('dbaccount_sqlDb_user_container_name')]"
+            },
+            {
+              "name": "RipaStorage",
+              "value": "[variables('keyvault_secret_ripa_storage')]"
+            },
+            {
+              "name": "SftpInputPath",
+              "value": "[variables('doj_inbound_folder')]"
+            },
+            {
+              "name": "SftpOutputPath",
+              "value": "[variables('doj_outbound_folder')]"
+            },
+            {
+              "name": "SftpPort",
+              "value": "[parameters('submission_fa_config_sftp_port')]"
+            },
+            {
+              "name": "SftpHost",
+              "value": "[variables('keyvault_secret_sftp_host')]"
+            },
+            {
+              "name": "SftpUserName",
+              "value": "[variables('keyvault_secret_sftp_username')]"
+            },
+            {
+              "name": "SftpPassword",
+              "value": "[variables('keyvault_secret_sftp_password')]"
+            },
+            {
+              "name": "SftpKey",
+              "value": "[variables('keyvault_secret_sftp_key')]"
+            },
+            {
+              "name": "SftpDisabled",
+              "value": "[parameters('doj_sftp_disabled')]"
+            },
+            {
+              "name": "ripa_app_id",
+              "value": "[parameters('auth_app_id')]"
+            },
+            {
+              "name": "ripa_tenant_id",
+              "value": "[parameters('auth_tenant_id')]"
+            },
+            {
+              "name": "ripa_tenant_name",
+              "value": "[parameters('auth_fqdn')]"
+            },
+            {
+              "name": "ServiceBusConnection",
+              "value": "[variables('keyvault_secret_servicebus_connection_string')]"
             }
           ],
           "use32BitWorkerProcess": "[parameters('use32BitWorkerProcess')]",
