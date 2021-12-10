@@ -13,7 +13,9 @@
       "defaultValue": "submission"
     },
   },
-  "variables": {},
+  "variables": {
+    "sites_ripa_submission_fa_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('submission_fa_name'))]",
+  },
   "resources": [
     {
       "type": "Microsoft.Resources/deploymentScripts",
@@ -114,116 +116,8 @@
         "siteConfig": {
           "appSettings": [
             {
-              "name": "FUNCTIONS_EXTENSION_VERSION",
-              "value": "~3"
-            },
-            {
-              "name": "FUNCTIONS_WORKER_RUNTIME",
-              "value": "dotnet"
-            },
-            {
-              "name": "AzureWebJobs.ServiceBusSubmissionConsumer.Disabled",
-              "value": "true"
-            },
-            {
-              "name": "AzureWebJobsStorage",
-              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccounts_ripafnsa_name'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccounts_ripafnsa_name')), '2019-06-01').keys[0].value,';EndpointSuffix=', parameters('storage_ep_suff'))]"
-            },
-            {
-              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-              "value": "[reference(concat('microsoft.insights/components/', variables('components_ripa_ai_name'))).InstrumentationKey]"
-            },
-            {
-              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-              "value": "[reference(concat('microsoft.insights/components/', variables('components_ripa_ai_name'))).ConnectionString]"
-            },
-            {
-              "name": "Account",
-              "value": "[reference(resourceId('Microsoft.DocumentDb/databaseAccounts', variables('databaseAccounts_ripa_cdb_name'))).documentEndpoint]"
-            },
-            {
-              "name": "DatabaseName",
-              "value": "[parameters('dbaccount_sqlDb_name')]"
-            },
-            {
-              "name": "Key",
-              "value": "[variables('user_fa_keyvault_referencestring')]"
-            },
-            {
-              "name": "ContainerNameSubmissions",
-              "value": "[parameters('dbaccount_sqlDb_submission_container_name')]"
-            },
-            {
-              "name": "ContainerNameStops",
-              "value": "[parameters('dbaccount_sqlDb_stop_container_name')]"
-            },
-            {
-              "name": "ContainerPrefixSubmissions",
-              "value": "[parameters('submission_fa_config_storage_container_prefix_submissions')]"
-            },
-            {
               "name": "ContainerPrefixCpra",
               "value": "[parameters('submission_fa_config_storage_container_prefix_cpra')]"
-            },
-            {
-              "name": "ContainerPrefixResults",
-              "value": "[parameters('submission_fa_config_storage_container_prefix_results')]"
-            },
-            {
-              "name": "UserProfileContainerName",
-              "value": "[parameters('dbaccount_sqlDb_user_container_name')]"
-            },
-            {
-              "name": "RipaStorage",
-              "value": "[variables('keyvault_secret_ripa_storage')]"
-            },
-            {
-              "name": "SftpInputPath",
-              "value": "[variables('doj_inbound_folder')]"
-            },
-            {
-              "name": "SftpOutputPath",
-              "value": "[variables('doj_outbound_folder')]"
-            },
-            {
-              "name": "SftpPort",
-              "value": "[parameters('submission_fa_config_sftp_port')]"
-            },
-            {
-              "name": "SftpHost",
-              "value": "[variables('keyvault_secret_sftp_host')]"
-            },
-            {
-              "name": "SftpUserName",
-              "value": "[variables('keyvault_secret_sftp_username')]"
-            },
-            {
-              "name": "SftpPassword",
-              "value": "[variables('keyvault_secret_sftp_password')]"
-            },
-            {
-              "name": "SftpKey",
-              "value": "[variables('keyvault_secret_sftp_key')]"
-            },
-            {
-              "name": "SftpDisabled",
-              "value": "[parameters('doj_sftp_disabled')]"
-            },
-            {
-              "name": "ripa_app_id",
-              "value": "[parameters('auth_app_id')]"
-            },
-            {
-              "name": "ripa_tenant_id",
-              "value": "[parameters('auth_tenant_id')]"
-            },
-            {
-              "name": "ripa_tenant_name",
-              "value": "[parameters('auth_fqdn')]"
-            },
-            {
-              "name": "ServiceBusConnection",
-              "value": "[variables('keyvault_secret_servicebus_connection_string')]"
             }
           ],
           "use32BitWorkerProcess": "[parameters('use32BitWorkerProcess')]",
