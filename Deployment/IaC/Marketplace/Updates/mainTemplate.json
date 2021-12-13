@@ -66,10 +66,6 @@
       "defaultValue": "submission-fa-asp",
       "type": "string"
     },
-    "virtualNetworks_vnet_name": {
-      "defaultValue": "vnet",
-      "type": "string"
-    },
     "service_apim_name": {
       "defaultValue": "apim",
       "type": "string"
@@ -80,18 +76,6 @@
     },
     "storageAccounts_functionssa_name": {
       "defaultValue": "fnsa",
-      "type": "string"
-    },
-    "workspaces_laws_name": {
-      "defaultValue": "laws",
-      "type": "string"
-    },
-    "networkSecurityGroups_apim_nsg_name": {
-      "defaultValue": "apim-nsg",
-      "type": "string"
-    },
-    "networkSecurityGroups_vnet_cdb_subnet_nsg_name": {
-      "defaultValue": "cdb-nsg",
       "type": "string"
     },
     "vaults_kv_secrets_key0": {
@@ -166,26 +150,6 @@
       "type": "string",
       "defaultValue": "submission"
     },
-    "apim_subnet_name": {
-      "type": "string",
-      "defaultValue": "-apim-subnet"
-    },
-    "cdb_subnet_name": {
-      "type": "string",
-      "defaultValue": "-cdb-subnet"
-    },
-    "Vnet_addressprefixes": {
-      "type": "array",
-      "defaultValue": ["172.16.0.0/16"]
-    },
-    "apim_subnet_addressprefix": {
-      "defaultValue": "172.16.0.0/24",
-      "type": "string"
-    },
-    "cdb_subnet_addressprefix": {
-      "defaultValue": "172.16.1.0/24",
-      "type": "string"
-    },
     "utcNowValue": {
       "type": "string",
       "defaultValue": "[utcNow('yyyyMMDDHHmmssFFFF')]"
@@ -194,15 +158,11 @@
   "variables": {
     "components_ripa_ai_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('components_ai_name'))]",
     "databaseAccounts_ripa_cdb_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('databaseAccounts_cdb_name'))]",
-    "networkSecurityGroups_ripa_apim_nsg_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('networkSecurityGroups_apim_nsg_name'))]",
-    "networkSecurityGroups_ripa_vnet_cdb_subnet_nsg_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('networkSecurityGroups_vnet_cdb_subnet_nsg_name'))]",
     "serverfarms_submission_ASP_riparg_af76_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('serverfarms_submission_ASP_name'))]",
     "service_ripa_apim_wus2_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('service_apim_name'))]",
     "sites_ripa_submission_fa_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('submission_fa_name'))]",
     "storageAccounts_ripafnsa_name": "[concat(parameters('agency_abbreviation'), replace(parameters('application'), '-', ''), parameters('storageAccounts_functionssa_name'))]",
     "vaults_ripa_kv_name": "[concat(parameters('agency_abbreviation'), parameters('application'), toLower(take(uniqueString(parameters('utcNowValue')), 3)), parameters('vaults_kv_name'))]",
-    "virtualNetworks_ripa_vnet_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('virtualNetworks_vnet_name'))]",
-    "workspaces_ripa_laws_name": "[concat(parameters('agency_abbreviation'),'-', parameters('application'),'-', parameters('workspaces_laws_name'))]",
     "user_fa_keyvault_referencestring": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key1'),')')]",
     "keyvault_secret_ripa_storage": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key3'),')')]",
     "keyvault_secret_sftp_key": "[concat('@Microsoft.KeyVault(SecretUri=https://',variables('vaults_ripa_kv_name'),'.usgovcloudapi.net/secrets/', parameters('vaults_kv_secrets_key6'),')')]",
@@ -290,12 +250,6 @@
       "identity": {
         "type": "SystemAssigned"
       },
-      "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', variables('serverfarms_submission_ASP_riparg_af76_name'))]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccounts_ripafnsa_name'))]",
-        "[resourceId('microsoft.insights/components', variables('components_ripa_ai_name'))]",
-        "[resourceId('Microsoft.DocumentDb/databaseAccounts', variables('databaseAccounts_ripa_cdb_name'))]"
-      ],
       "kind": "functionapp,linux",
       "tags": "[union(variables('default_tags'), if(contains(parameters('user_tags'), 'Microsoft.Web/sites'), parameters('user_tags')['Microsoft.Web/sites'], json('{}')))]",
       "properties": {
@@ -531,207 +485,6 @@
       "properties": {
         "siteName": "[variables('sites_ripa_submission_fa_name')]",
         "hostNameType": "Verified"
-      }
-    },
-    {
-      "type": "Microsoft.Web/serverfarms",
-      "apiVersion": "2018-02-01",
-      "name": "[variables('serverfarms_submission_ASP_riparg_af76_name')]",
-      "location": "[resourceGroup().location]",
-      "sku": {
-        "name": "Y1",
-        "tier": "Dynamic",
-        "size": "Y1",
-        "family": "Y",
-        "capacity": 0
-      },
-      "kind": "functionapp",
-      "tags": "[union(variables('default_tags'), if(contains(parameters('user_tags'), 'Microsoft.Web/serverfarms'), parameters('user_tags')['Microsoft.Web/serverfarms'], json('{}')))]",
-      "properties": {
-        "perSiteScaling": false,
-        "maximumElasticWorkerCount": 1,
-        "isSpot": false,
-        "reserved": true,
-        "isXenon": false,
-        "hyperV": false,
-        "targetWorkerCount": 0,
-        "targetWorkerSizeId": 0
-      }
-    },
-    {
-      "type": "Microsoft.Storage/storageAccounts",
-      "apiVersion": "2019-06-01",
-      "name": "[variables('storageAccounts_ripafnsa_name')]",
-      "location": "[resourceGroup().location]",
-      "sku": {
-        "name": "Standard_LRS",
-        "tier": "Standard"
-      },
-      "kind": "Storage",
-      "tags": "[union(variables('default_tags'), if(contains(parameters('user_tags'), 'Microsoft.Storage/storageAccounts'), parameters('user_tags')['Microsoft.Storage/storageAccounts'], json('{}')))]",
-      "properties": {
-        "minimumTlsVersion": "TLS1_2",
-        "networkAcls": {
-          "resourceAccessRules": [],
-          "bypass": "AzureServices",
-          "virtualNetworkRules": [],
-          "ipRules": [],
-          "defaultAction": "Allow"
-        },
-        "supportsHttpsTrafficOnly": true,
-        "encryption": {
-          "services": {
-            "file": {
-              "keyType": "Account",
-              "enabled": true
-            },
-            "blob": {
-              "keyType": "Account",
-              "enabled": true
-            }
-          },
-          "keySource": "Microsoft.Storage"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Insights/components",
-      "apiVersion": "2020-02-02-preview",
-      "location": "[resourceGroup().location]",
-      "name": "[variables('components_ripa_ai_name')]",
-      "dependsOn": [
-        "[resourceId('microsoft.operationalinsights/workspaces', variables('workspaces_ripa_laws_name'))]"
-      ],
-      "kind": "web",
-      "tags": "[union(variables('default_tags'), if(contains(parameters('user_tags'), 'Microsoft.Insights/components'), parameters('user_tags')['Microsoft.Insights/components'], json('{}')))]",
-      "properties": {
-        "Application_Type": "web",
-        "Flow_Type": "Redfield",
-        "Request_Source": "IbizaAIExtension",
-        "WorkspaceResourceId": "[resourceId('microsoft.operationalinsights/workspaces', variables('workspaces_ripa_laws_name'))]",
-        "IngestionMode": "LogAnalytics",
-        "publicNetworkAccessForIngestion": "Enabled",
-        "publicNetworkAccessForQuery": "Enabled"
-      }
-    },
-    {
-      "type": "Microsoft.DocumentDB/databaseAccounts",
-      "apiVersion": "2020-09-01",
-      "name": "[variables('databaseAccounts_ripa_cdb_name')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_ripa_vnet_name'), concat(variables('virtualNetworks_ripa_vnet_name'), parameters('cdb_subnet_name')))]"
-      ],
-      "kind": "GlobalDocumentDB",
-      "tags": "[union(variables('default_tags'), if(contains(parameters('user_tags'), 'Microsoft.DocumentDB/databaseAccounts'), parameters('user_tags')['Microsoft.DocumentDB/databaseAccounts'], json('{}')))]",
-      "properties": {
-        "publicNetworkAccess": "Enabled",
-        "enableAutomaticFailover": false,
-        "enableMultipleWriteLocations": false,
-        "isVirtualNetworkFilterEnabled": true,
-        "virtualNetworkRules": [
-          {
-            "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworks_ripa_vnet_name'), concat(variables('virtualNetworks_ripa_vnet_name'), parameters('cdb_subnet_name')))]",
-            "ignoreMissingVNetServiceEndpoint": true
-          }
-        ],
-        "disableKeyBasedMetadataWriteAccess": false,
-        "enableFreeTier": false,
-        "enableAnalyticalStorage": false,
-        "databaseAccountOfferType": "Standard",
-        "consistencyPolicy": {
-          "defaultConsistencyLevel": "Session",
-          "maxIntervalInSeconds": 5,
-          "maxStalenessPrefix": 100
-        },
-        "locations": [
-          {
-            "locationName": "[resourceGroup().location]",
-            "provisioningState": "Succeeded",
-            "failoverPriority": 0,
-            "isZoneRedundant": false
-          }
-        ],
-        "cors": [],
-        "capabilities": [
-          {
-            "name": "EnableServerless"
-          }
-        ],
-        "ipRules": [
-          {
-            "ipAddressOrRange": "0.0.0.0"
-          }
-        ],
-        "backupPolicy": {
-          "type": "Periodic",
-          "periodicModeProperties": {
-            "backupIntervalInMinutes": 60,
-            "backupRetentionIntervalInHours": 168
-          }
-        }
-      }
-    },
-    {
-      "type": "Microsoft.OperationalInsights/workspaces",
-      "apiVersion": "2020-10-01",
-      "name": "[variables('workspaces_ripa_laws_name')]",
-      "location": "[resourceGroup().location]",
-      "tags": "[union(variables('default_tags'), if(contains(parameters('user_tags'), 'Microsoft.OperationalInsights/workspaces'), parameters('user_tags')['Microsoft.OperationalInsights/workspaces'], json('{}')))]",
-      "properties": {
-        "sku": {
-          "name": "pergb2018"
-        },
-        "retentionInDays": 30,
-        "workspaceCapping": {
-          "dailyQuotaGb": -1
-        },
-        "publicNetworkAccessForIngestion": "Enabled",
-        "publicNetworkAccessForQuery": "Enabled"
-      }
-    },
-    {
-      "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2020-08-01",
-      "name": "[variables('virtualNetworks_ripa_vnet_name')]",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_ripa_apim_nsg_name'))]",
-        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_ripa_vnet_cdb_subnet_nsg_name'))]"
-      ],
-      "tags": "[union(variables('default_tags'), if(contains(parameters('user_tags'), 'Microsoft.Network/virtualNetworks'), parameters('user_tags')['Microsoft.Network/virtualNetworks'], json('{}')))]",
-      "properties": {
-        "addressSpace": {
-          "addressPrefixes": "[parameters('Vnet_addressprefixes')]"
-        },
-        "subnets": [
-          {
-            "name": "[concat(variables('virtualNetworks_ripa_vnet_name'), parameters('apim_subnet_name'))]",
-            "properties": {
-              "addressPrefix": "[parameters('apim_subnet_addressprefix')]",
-              "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_ripa_apim_nsg_name'))]"
-              },
-              "delegations": [],
-              "privateEndpointNetworkPolicies": "Enabled",
-              "privateLinkServiceNetworkPolicies": "Enabled"
-            }
-          },
-          {
-            "name": "[concat(variables('virtualNetworks_ripa_vnet_name'), parameters('cdb_subnet_name'))]",
-            "properties": {
-              "addressPrefix": "[parameters('cdb_subnet_addressprefix')]",
-              "networkSecurityGroup": {
-                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroups_ripa_vnet_cdb_subnet_nsg_name'))]"
-              },
-              "delegations": [],
-              "privateEndpointNetworkPolicies": "Disabled",
-              "privateLinkServiceNetworkPolicies": "Enabled"
-            }
-          }
-        ],
-        "virtualNetworkPeerings": [],
-        "enableDdosProtection": false
       }
     }
   ],
